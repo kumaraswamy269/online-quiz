@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - QuizPulse Online Examination System</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .auth-container {
+      min-height: calc(100vh - 140px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 460px;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .auth-header h1 {
+      font-size: 1.5rem;
+      color: var(--slate-900);
+      margin-top: 8px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-md);
+      outline: none;
+    }
+    .form-control:focus {
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px var(--primary-100);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-brand">
+        QuizPulse <span class="badge">MySQL RDBMS</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/quizzes.html">Browse Quizzes</a></li>
+        <li><a href="/login.html">Login</a></li>
+        <li><a href="/register.html" class="active btn btn-primary" style="color: #fff;">Register</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="auth-container">
+    <div class="card auth-card">
+      <div class="auth-header">
+        <span class="badge" style="background: var(--primary-100); color: var(--primary-700); padding: 4px 10px; border-radius: 20px; font-weight: 600; font-size: 0.75rem;">
+          New Candidate
+        </span>
+        <h1>Create Student Account</h1>
+        <p style="font-size: 0.85rem; color: var(--slate-600);">Register to attend timed examinations and view performance history</p>
+      </div>
+
+      <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" class="form-control" placeholder="e.g. Alex Morgan" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Institutional Email</label>
+          <input type="email" id="email" class="form-control" placeholder="alex.morgan@quizpulse.edu" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password (Minimum 6 characters)</label>
+          <input type="password" id="password" class="form-control" placeholder="Create a strong password" minlength="6" required>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Account Role</label>
+          <select id="role" class="form-control">
+            <option value="student" selected>Student / Examinee</option>
+            <option value="admin">Examination Administrator</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px;">
+          Complete Registration
+        </button>
+      </form>
+
+      <p style="text-align: center; font-size: 0.85rem; margin-top: 20px; color: var(--slate-600);">
+        Already have an account? <a href="/login.html">Sign In</a>
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      QuizPulse Online Examination System &copy; 2026.
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

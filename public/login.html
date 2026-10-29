@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - QuizPulse Online Examination System</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .auth-container {
+      min-height: calc(100vh - 140px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .auth-header h1 {
+      font-size: 1.5rem;
+      color: var(--slate-900);
+      margin-top: 8px;
+    }
+    .auth-header p {
+      font-size: 0.85rem;
+      color: var(--slate-600);
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px var(--primary-100);
+    }
+    .demo-box {
+      margin-top: 24px;
+      padding: 16px;
+      background-color: var(--slate-100);
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+    }
+    .demo-box h4 {
+      margin-bottom: 8px;
+      color: var(--slate-700);
+      font-size: 0.85rem;
+    }
+    .demo-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .demo-btn {
+      flex: 1;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      border: 1px solid var(--slate-300);
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .demo-btn:hover {
+      background-color: var(--primary-50);
+      border-color: var(--primary-500);
+      color: var(--primary-700);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-brand">
+        QuizPulse <span class="badge">MySQL RDBMS</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/quizzes.html">Browse Quizzes</a></li>
+        <li><a href="/login.html" class="active">Login</a></li>
+        <li><a href="/register.html" class="btn btn-primary" style="color: #fff;">Register</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Login Main -->
+  <div class="auth-container">
+    <div class="card auth-card">
+      <div class="auth-header">
+        <span class="badge" style="background: var(--primary-100); color: var(--primary-700); padding: 4px 10px; border-radius: 20px; font-weight: 600; font-size: 0.75rem;">
+          Secure Access
+        </span>
+        <h1>Account Sign In</h1>
+        <p>Access your student portal or examination administrator console</p>
+      </div>
+
+      <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Institutional Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="name@quizpulse.edu" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px;">
+          Sign In to Examination Portal
+        </button>
+      </form>
+
+      <!-- 1-Click Demo Accounts -->
+      <div class="demo-box">
+        <h4>Demo Credentials (Auto-fill)</h4>
+        <p>Click below to prefill verified academic demo accounts:</p>
+        <div class="demo-buttons">
+          <button type="button" class="demo-btn" onclick="fillCreds('admin@quizpulse.edu', 'AdminPassword123!')">
+            Admin Profile
+          </button>
+          <button type="button" class="demo-btn" onclick="fillCreds('student1@quizpulse.edu', 'StudentPassword123!')">
+            Student 1 (Sarah)
+          </button>
+          <button type="button" class="demo-btn" onclick="fillCreds('student2@quizpulse.edu', 'StudentPassword123!')">
+            Student 2 (Marcus)
+          </button>
+        </div>
+      </div>
+
+      <p style="text-align: center; font-size: 0.85rem; margin-top: 20px; color: var(--slate-600);">
+        Don't have an account? <a href="/register.html">Register as Student</a>
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      QuizPulse Online Examination System &copy; 2026. BTech CSE Academic Architecture.
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    function fillCreds(email, password) {
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = password;
+    }
+  </script>
+</body>
+</html>

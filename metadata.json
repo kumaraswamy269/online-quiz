@@ -1,0 +1,6 @@
+{
+  "name": "QuizPulse - Relational Online Quiz & Assessment System",
+  "description": "Professional online examination platform featuring server-authoritative timed exams, interactive study & practice mode, secure encrypted question delivery, automated grading, anti-cheat proctoring, and verifiable certificates.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

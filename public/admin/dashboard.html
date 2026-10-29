@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - QuizPulse</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+    .admin-sidebar {
+      width: 250px;
+      background: #ffffff;
+      border-right: 1px solid var(--slate-200);
+      padding: 24px 16px;
+    }
+    .sidebar-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      color: var(--slate-700);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .sidebar-menu a:hover,
+    .sidebar-menu a.active {
+      background-color: var(--primary-50);
+      color: var(--primary-700);
+      font-weight: 600;
+    }
+    .admin-content {
+      flex: 1;
+      padding: 32px;
+      background-color: var(--slate-50);
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+    .metric-card .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--slate-600);
+      font-weight: 600;
+    }
+    .metric-card .value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-top: 4px;
+    }
+    .table-container {
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    th {
+      background: var(--slate-100);
+      padding: 12px 16px;
+      color: var(--slate-600);
+      border-bottom: 1px solid var(--slate-200);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--slate-200);
+      color: var(--slate-700);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="container" style="max-width: 100%; padding: 0 32px;">
+      <a href="/admin/dashboard.html" class="navbar-brand">
+        QuizPulse <span class="badge" style="background: var(--slate-800); color: #fff;">Admin Console</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span id="adminName" style="font-size: 0.85rem; font-weight: 600; color: var(--slate-700);">Administrator</span>
+        <button onclick="handleLogout()" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <ul class="sidebar-menu">
+        <li><a href="/admin/dashboard.html" class="active">📊 Overview Stats</a></li>
+        <li><a href="/admin/quizzes.html">📝 Quiz Management</a></li>
+        <li><a href="/admin/questions.html">❓ Question Bank</a></li>
+        <li><a href="/admin/students.html">🎓 Registered Students</a></li>
+        <li><a href="/admin/results.html">📈 Results & Reports</a></li>
+        <li style="margin-top: 20px; border-top: 1px solid var(--slate-200); padding-top: 16px;">
+          <a href="/quizzes.html" target="_blank" style="color: var(--slate-500); font-size: 0.8rem;">
+            ↗ Student View Preview
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div>
+          <h1 style="font-size: 1.5rem; color: var(--slate-900);">Examination Analytics Overview</h1>
+          <p style="font-size: 0.85rem; color: var(--slate-600);">Real-time metrics calculated via MySQL multi-table aggregates and foreign key relations</p>
+        </div>
+        <a href="/admin/quizzes.html" class="btn btn-primary">+ Create New Quiz</a>
+      </div>
+
+      <!-- KPI Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="label">Total Quizzes</div>
+          <div class="value" id="kpiQuizzes">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Question Bank Size</div>
+          <div class="value" id="kpiQuestions">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Registered Students</div>
+          <div class="value" id="kpiStudents">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Total Submissions</div>
+          <div class="value" id="kpiAttempts">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Global Pass Rate</div>
+          <div class="value" id="kpiPassRate" style="color: var(--success-600);">0.0%</div>
+        </div>
+      </div>
+
+      <!-- Section: Course Performance Breakdown -->
+      <div style="margin-bottom: 12px;">
+        <h3 style="font-size: 1.1rem; color: var(--slate-900);">Course Performance Breakdown</h3>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Quiz Title</th>
+              <th>Duration</th>
+              <th>Pass Mark</th>
+              <th>Attempts</th>
+              <th>Average Score</th>
+              <th>Actual Pass %</th>
+            </tr>
+          </thead>
+          <tbody id="quizPerfBody">
+            <tr><td colspan="6" style="text-align: center; padding: 20px;">Loading performance data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Section: Item Discrimination (Hardest Questions) -->
+      <div style="margin-bottom: 12px;">
+        <h3 style="font-size: 1.1rem; color: var(--slate-900);">Item Discrimination Analysis (Lowest Accuracy Questions)</h3>
+        <p style="font-size: 0.8rem; color: var(--slate-600);">Questions identified with highest incorrect answer frequency</p>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Question Prompt</th>
+              <th>Belongs to Quiz</th>
+              <th>Submissions</th>
+              <th>Correct</th>
+              <th>Accuracy Rate</th>
+            </tr>
+          </thead>
+          <tbody id="questionDiffBody">
+            <tr><td colspan="5" style="text-align: center; padding: 20px;">Loading question difficulty analysis...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    async function loadAdminDashboard() {
+      const user = window.api.getCurrentUser();
+      if (!user || user.role !== 'admin') {
+        alert('Access denied. Administrator privileges required.');
+        window.location.href = '/login.html';
+        return;
+      }
+      document.getElementById('adminName').textContent = user.name;
+
+      try {
+        const res = await window.api.getAdminDashboard();
+        const data = res.data;
+
+        document.getElementById('kpiQuizzes').textContent = data.stats.total_quizzes || 0;
+        document.getElementById('kpiQuestions').textContent = data.stats.total_questions || 0;
+        document.getElementById('kpiStudents').textContent = data.stats.total_students || 0;
+        document.getElementById('kpiAttempts').textContent = data.stats.total_attempts || 0;
+        document.getElementById('kpiPassRate').textContent = `${data.stats.pass_rate || 0}%`;
+
+        // Quiz performance
+        const perfBody = document.getElementById('quizPerfBody');
+        if (data.quizPerformance && data.quizPerformance.length > 0) {
+          perfBody.innerHTML = data.quizPerformance.map(q => `
+            <tr>
+              <td style="font-weight: 600; color: var(--slate-900);">${q.title}</td>
+              <td>${q.duration_minutes} mins</td>
+              <td>${q.passing_percentage}%</td>
+              <td><strong>${q.total_attempts}</strong></td>
+              <td>${q.average_score}%</td>
+              <td>
+                <span class="badge" style="background: ${q.pass_percentage_actual >= q.passing_percentage ? 'var(--success-50)' : 'var(--warning-50)'}; color: ${q.pass_percentage_actual >= q.passing_percentage ? 'var(--success-600)' : 'var(--warning-500)'}; font-weight: 700; padding: 2px 6px;">
+                  ${q.pass_percentage_actual}%
+                </span>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        // Question difficulty
+        const diffBody = document.getElementById('questionDiffBody');
+        if (data.questionDifficulty && data.questionDifficulty.length > 0) {
+          diffBody.innerHTML = data.questionDifficulty.map(item => `
+            <tr>
+              <td style="font-weight: 500; max-width: 380px;">${item.question_text}</td>
+              <td>${item.quiz_title}</td>
+              <td>${item.total_answers}</td>
+              <td style="color: var(--success-600); font-weight: 600;">${item.correct_answers}</td>
+              <td>
+                <span class="badge" style="background: ${item.accuracy_rate < 50 ? 'var(--danger-50)' : 'var(--success-50)'}; color: ${item.accuracy_rate < 50 ? 'var(--danger-600)' : 'var(--success-600)'}; font-weight: 700; padding: 2px 6px;">
+                  ${item.accuracy_rate}%
+                </span>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          diffBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: var(--slate-500);">No attempt answers recorded yet.</td></tr>`;
+        }
+
+      } catch (err) {
+        console.error('Failed to load admin dashboard:', err);
+      }
+    }
+
+    async function handleLogout() {
+      await window.api.logout();
+      window.location.href = '/login.html';
+    }
+
+    loadAdminDashboard();
+  </script>
+</body>
+</html>
